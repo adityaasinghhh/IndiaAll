@@ -1,0 +1,131 @@
+/* INDIA ALL admin portal visual layer: photographic backgrounds with a readable, light veil. */
+.admin-shell {
+  color: #172536;
+}
+
+.admin-main-column {
+  min-width: 0;
+}
+
+.admin-workspace {
+  position: relative;
+  isolation: isolate;
+  min-height: calc(100vh - 4rem);
+  background-color: #f5f6f8;
+  background-image:
+    linear-gradient(135deg, rgba(247, 248, 250, 0.88), rgba(247, 248, 250, 0.80)),
+    var(--admin-page-image, url("/images/commodity-port.jpg"));
+  background-position: center, center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: scroll, fixed;
+}
+
+.admin-workspace > * {
+  position: relative;
+  z-index: 1;
+}
+
+.admin-workspace .rounded-xl.border,
+.admin-workspace .rounded-lg.border {
+  backdrop-filter: blur(2px);
+}
+
+.admin-workspace article,
+.admin-workspace section > .overflow-x-auto,
+.admin-workspace section > .space-y-3 > div {
+  transition: box-shadow 220ms ease, border-color 220ms ease, transform 220ms ease;
+}
+
+.admin-workspace article:hover {
+  border-color: rgba(201, 163, 74, 0.55);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+.admin-premium-button {
+  transform: translateY(0) scale(1);
+  transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 220ms ease, background-color 220ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .admin-premium-button:hover {
+    transform: scale(1.045);
+    box-shadow: 0 10px 24px rgba(169, 132, 47, 0.24);
+  }
+}
+
+.admin-premium-button:active {
+  transform: scale(0.985);
+}
+
+.admin-login-scene {
+  display: flex;
+  min-height: 80vh;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1rem;
+  background-color: #142337;
+  background-image:
+    linear-gradient(115deg, rgba(9, 25, 44, 0.86), rgba(9, 25, 44, 0.62)),
+    url("/images/commodity-port.jpg");
+  background-position: center;
+  background-size: cover;
+}
+
+.admin-login-card {
+  width: 100%;
+  max-width: 28rem;
+  border: 1px solid rgba(201, 163, 74, 0.35);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.97);
+  padding: 2rem;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(12px);
+}
+
+.admin-login-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  color: #526174;
+}
+
+.admin-loading-spinner {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 3px solid #e7e9ed;
+  border-top-color: #c9a34a;
+  border-radius: 50%;
+  animation: admin-loading-spin 700ms linear infinite;
+}
+
+@keyframes admin-loading-spin {
+  to { transform: rotate(360deg); }
+}
+
+.admin-topbar {
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.025);
+}
+
+@media (max-width: 640px) {
+  .admin-workspace {
+    background-image:
+      linear-gradient(135deg, rgba(247, 248, 250, 0.91), rgba(247, 248, 250, 0.86)),
+      var(--admin-page-image, url("/images/commodity-port.jpg"));
+    background-attachment: scroll;
+  }
+
+  .admin-login-card {
+    padding: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-premium-button,
+  .admin-workspace article,
+  .admin-loading-spinner {
+    animation: none;
+    transition: none;
+  }
+}

@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+server/node_modules/
+
+# Environment — never commit secrets
+.env
+server.env
+*.local
+
+# Build output
+client/dist/
+dist/
+
+# Logs
+*.log
+npm-debug.log*
+server-test-run.log
+test-output.txt
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Project snapshots and backups
+/backup-client/
+/backup-oct18-target/
+/backup-pre-revert/
+/backups/
+
+# Temporary artifact
+/System.IO.MemoryStream
+
+# Local chatbot backups
+/.backup-chatbot-*/
+/backup-chatbot-*/
+/backup-*/
+/backups/
+
+# Server logs
+*.log
+**/*.log
+
+server/log.txt
