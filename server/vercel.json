@@ -1,8 +1,6 @@
 {
   "framework": "express",
-  "buildCommand": "npm run build",
-  "startCommand": "node src/server.js",
-  "functions": "src/server.js",
+  "functions": "api/index.js",
   "headers": [
     {
       "source": "/(.*)",
