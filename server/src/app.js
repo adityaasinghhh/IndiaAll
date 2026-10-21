@@ -80,6 +80,11 @@ app.get('/api/v1/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() })
 })
 
+// ── Simple hello endpoint (for Vercel deployment verification) ────────────
+app.get('/api/hello', (req, res) => {
+  res.json({ message: 'Hello from backend' })
+})
+
 // API routes
 app.use('/api/v1/auth', authRoutes)
 app.use('/api/v1/auth', authMfaRouter)
