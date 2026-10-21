@@ -29,14 +29,12 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false)
   const isHomePage = location.pathname === '/'
 
-  // Header background: transparent over hero, solid charcoal on scroll
   const headerBg = isHomePage
     ? scrolled
       ? 'bg-charcoal/95 backdrop-blur-md supports-[backdrop-filter]:bg-charcoal/95'
       : 'bg-transparent'
     : 'bg-charcoal/95 backdrop-blur-md'
 
-  // Header border - only bottom on scroll, invisible otherwise
   const headerBorder = scrolled ? 'border-b border-white/10' : 'border-b-0'
 
   const navLinks = [
@@ -47,22 +45,18 @@ export default function Header() {
     { to: '/contact', label: t.nav.contact },
   ]
 
-  // Close the mobile menu whenever the route changes
   useEffect(() => {
     setMobileOpen(false)
   }, [location.pathname])
 
-  // Animate the mobile panel in and out
   useEffect(() => {
     if (mobileOpen) {
       const frame = requestAnimationFrame(() => setMenuVisible(true))
       return () => cancelAnimationFrame(frame)
     }
     setMenuVisible(false)
-    return undefined
   }, [mobileOpen])
 
-  // Track scroll for header styling
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10)
@@ -73,25 +67,39 @@ export default function Header() {
 
   const closeMobileMenu = () => setMobileOpen(false)
 
+  const getNavLinkTextColor = () => (isActive) => {
+    const textColor = scrolled ? 'text-off-white' : 'text-charcoal'
+    if (isActive) {
+      return 'relative text-gold font-bold after:content-[""] after:absolute after:bottom-[0.1rem] after:left-0 after:w-full after:h-0.5 after:bg-gold'
+    }
+    return `relative ${textColor} transition-colors hover:text-gold focus-visible:ring-2 focus:ring-industrial-blue/50`
+  }
+
+  const getMobileNavLinkTextColor = () => (isActive) => {
+    if (isActive) {
+      return 'block rounded-lg px-4 py-3 text-sm font-bold text-gold bg-white/5'
+    }
+    const textColor = scrolled ? 'text-off-white' : 'text-charcoal'
+    return `block rounded-lg px-4 py-3 text-sm font-semibold ${textColor} hover:text-gold transition-colors`
+  }
+
+  const headerTextColor = scrolled ? 'text-off-white' : 'text-charcoal'
+
   return (
-    <header
-      className={`sticky top-0 z-50 ${headerBg} ${headerBorder} transition-all duration-300`}
-    >
+    <header className={`sticky top-0 z-50 ${headerBg} ${headerBorder} transition-all duration-300`}>
       <div className="container-site flex items-center justify-between gap-4 py-3 md:py-4">
         <IndiaAllLogo />
 
-        {/* Center navigation */}
         <nav className="hidden items-center gap-8 lg:flex" aria-label="Primary">
           {navLinks.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
               className={({ isActive }) => {
-                const active = isActive
-                if (active) {
+                if (isActive) {
                   return 'relative text-gold font-bold after:content-[""] after:absolute after:bottom-[0.1rem] after:left-0 after:w-full after:h-0.5 after:bg-gold'
                 }
-                return 'relative text-titanium/90 transition-colors hover:text-off-white focus-visible:ring-2 focus:ring-industrial-blue/50'
+                return `relative ${getNavLinkTextColor(isActive)} focus-visible:ring-2 focus:ring-industrial-blue/50`
               }}
             >
               {link.label}
@@ -99,23 +107,29 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* Right actions: language, sign-in, CTA */}
         <div className="hidden items-center gap-4 lg:flex">
-          <LanguageSwitcher />
-
-          <NavLink
-            to="/login"
-            className="text-titanium text-sm font-semibold transition-colors hover:text-gold"
-          >
-            {t.header.signIn}
-          </NavLink>
-
+          <LanguageSwitcher dark={scrolled} />
+          {!loading &&
+            (customer ? (
+              <NavLink
+                to="/dashboard"
+                className={`inline-flex items-center rounded-md border border-gold/60 px-4 py-2 text-sm font-semibold transition-colors hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${headerTextColor}`}
+              >
+                {t.header.dashboard}
+              </NavLink>
+            ) : (
+              <NavLink
+                to="/login"
+                className={`inline-flex items-center rounded-md border border-gold/60 px-4 py-2 text-sm font-semibold transition-colors hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${headerTextColor}`}
+              >
+                {t.header.signIn}
+              </NavLink>
+            ))}
           <Link to="/enquiry" className="btn-gold">
             {t.nav.requestQuote}
           </Link>
         </div>
 
-        {/* Mobile menu toggle */}
         <button
           type="button"
           onClick={() => setMobileOpen((open) => !open)}
@@ -140,11 +154,9 @@ export default function Header() {
         </button>
       </div>
 
-      {/* Mobile navigation panel */}
       <div
         id="mobile-navigation"
-        className={`overflow-hidden border-t border-white/10 bg-charcoal/95 backdrop-blur-md transition-[max-height,opacity] duration-300 ease-in-out lg:hidden ${
-          menuVisible ? 'max-h-[560px] opacity-100' : 'max-h-0 opacity-0'}${mobileOpen ? '' : 'pointer-events-none border-t-0'}`}
+        className={`overflow-hidden border-t border-white/10 bg-charcoal/95 backdrop-blur-md transition-[max-height,opacity] duration-300 ease-in-out lg:hidden ${menuVisible ? 'max-h-[560px] opacity-100' : 'max-h-0 opacity-0'}${mobileOpen ? '' : 'pointer-events-none border-t-0'}`}
       >
         <nav className="container-site flex flex-col gap-1 py-4 px-4" aria-label="Mobile">
           {navLinks.map((link) => (
@@ -154,11 +166,11 @@ export default function Header() {
               end={link.to === '/'}
               onClick={closeMobileMenu}
               className={({ isActive }) => {
-                const active = isActive
-                if (active) {
+                if (isActive) {
                   return 'block rounded-lg px-4 py-3 text-sm font-bold text-gold bg-white/5'
                 }
-                return 'block rounded-lg px-4 py-3 text-sm font-semibold text-titanium hover:text-gold transition-colors'
+                const textColor = scrolled ? 'text-off-white' : 'text-charcoal'
+                return `block rounded-lg px-4 py-3 text-sm font-semibold ${textColor} hover:text-gold transition-colors`
               }}
             >
               {link.label}
@@ -169,7 +181,7 @@ export default function Header() {
               <NavLink
                 to="/dashboard"
                 onClick={closeMobileMenu}
-                className="block rounded-lg px-4 py-3 text-sm font-semibold text-gold hover:bg-white/5"
+                className="block rounded-lg px-4 py-3 text-sm font-semibold text-charcoal hover:bg-white/5"
               >
                 {t.header.dashboard}
               </NavLink>
@@ -177,7 +189,7 @@ export default function Header() {
               <NavLink
                 to="/login"
                 onClick={closeMobileMenu}
-                className="block rounded-lg px-4 py-3 text-sm font-semibold text-titanium hover:text-gold"
+                className="block rounded-lg px-4 py-3 text-sm font-semibold text-charcoal hover:text-gold"
               >
                 {t.header.signIn}
               </NavLink>

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
 const ChatUnansweredSchema = new mongoose.Schema(
   {
@@ -63,4 +63,4 @@ ChatUnansweredSchema.statics.markResolved = function (normalizedQuestion, langua
   )
 }
 
-module.exports = mongoose.model('ChatUnanswered', ChatUnansweredSchema)
+export default mongoose.model('ChatUnanswered', ChatUnansweredSchema)

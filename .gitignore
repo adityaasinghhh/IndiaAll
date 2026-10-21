@@ -43,3 +43,27 @@ Thumbs.db
 **/*.log
 
 server/log.txt
+
+# local notes and helper files
+*.ps1
+fix_chat.py
+*_REPORT.md
+Final_Report.txt
+IMPLEMENTATION_NOTES.md
+ADMIN_PORTAL_UPDATE_NOTES.md
+Routing_Table.txt
+build-output.txt
+server/test-results.txt
+System.IO.MemoryStream
+
+# local notes and helper files
+*.ps1
+fix_chat.py
+*_REPORT.md
+Final_Report.txt
+IMPLEMENTATION_NOTES.md
+ADMIN_PORTAL_UPDATE_NOTES.md
+Routing_Table.txt
+build-output.txt
+server/test-results.txt
+System.IO.MemoryStream

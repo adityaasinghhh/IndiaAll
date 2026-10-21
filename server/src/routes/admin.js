@@ -229,7 +229,7 @@ function normaliseForMatching(text) {
 }
 
 // Import models at the bottom to avoid circular references
-const ChatFaq = require('../models/chat/ChatFaq.js')
-const ChatUnanswered = require('../models/chat/ChatUnanswered.js')
+import ChatFaq from '../models/chat/ChatFaq.js'
+import ChatUnanswered from '../models/chat/ChatUnanswered.js'
 
-module.exports = router
+export default router

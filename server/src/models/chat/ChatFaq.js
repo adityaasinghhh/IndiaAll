@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
 const ChatFaqSchema = new mongoose.Schema(
   {
@@ -36,4 +36,4 @@ const ChatFaqSchema = new mongoose.Schema(
 // Index for faster lookups by language and active status
 ChatFaqSchema.index({ language: 1, active: 1, question: 1 })
 
-module.exports = mongoose.model('ChatFaq', ChatFaqSchema)
+export default mongoose.model('ChatFaq', ChatFaqSchema)
