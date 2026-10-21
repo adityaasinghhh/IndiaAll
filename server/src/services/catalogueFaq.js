@@ -1,4 +1,4 @@
-import { products } from '../../../client/src/data/products.js'
+import { products } from '../data/products.js'
 
 /* ── Empty input ─────────────────────────────────────────────── */
 

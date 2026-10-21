@@ -8,7 +8,12 @@
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
     "seed": "node src/config/seed.js",
+    "sync:catalogue": "node scripts/sync-catalogue.mjs",
+    "sync:catalogue:check": "node scripts/sync-catalogue.mjs --check",
     "test": "node --test tests/admin.test.js tests/utils.test.js tests/chat.test.js"
+  },
+  "engines": {
+    "node": ">=22"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

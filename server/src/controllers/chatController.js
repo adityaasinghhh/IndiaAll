@@ -1,5 +1,5 @@
 import { config } from '../config/env.js'
-import { products } from '../../../client/src/data/products.js'
+import { products } from '../data/products.js'
 
 const MAX_MESSAGE_LENGTH = 1000
 const MAX_HISTORY_MESSAGES = 6

@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser'
 import { fileURLToPath } from 'node:url'
 import path from 'path'
 import { config } from './config/env.js'
+import { ensureDatabaseConnection } from './config/database.js'
 import { errorHandler, notFound } from './middleware/errorHandler.js'
 import authRoutes from './routes/auth.js'
 import { customerRouter as authMfaRouter } from './routes/mfa.js'
@@ -41,11 +42,18 @@ app.use(helmet.contentSecurityPolicy({
 app.use(helmet.referrerPolicy({ policy: 'strict-origin-when-cross-origin' }))
 
 // CORS – allow only configured origin(s)
-const originTwin = new URL(config.clientUrl)
-originTwin.hostname = `www.${originTwin.hostname}`
 const allowedOrigins = new Set()
 allowedOrigins.add(config.clientUrl)
-allowedOrigins.add(originTwin.toString())
+// The public site and the API are served from the same domain (the browser
+// calls /api/* on the same origin), so CORS is only a safety net for local
+// development and for a separately hosted frontend.
+try {
+  const originTwin = new URL(config.clientUrl)
+  originTwin.hostname = `www.${originTwin.hostname}`
+  allowedOrigins.add(originTwin.toString())
+} catch {
+  console.warn('CLIENT_URL is not a valid URL — only the configured value is allowed as an origin.')
+}
 // Add localhost origins only in development
 if (config.nodeEnv !== 'production') {
   allowedOrigins.add('http://localhost:3000')
@@ -53,17 +61,36 @@ if (config.nodeEnv !== 'production') {
   allowedOrigins.add('http://127.0.0.1:3001')
 }
 
-app.use(cors({
-  origin(origin, callback) {
-    // Allow requests without an Origin header (e.g. local scripts).
-    if (!origin || allowedOrigins.has(origin)) {
-      return callback(null, true)
-    }
-    return callback(new Error(`CORS blocked origin: ${origin}`))
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+// A request that comes from the same host as the API is always allowed. On
+// Vercel the browser calls /api/* on the very same domain, and the domain of
+// a preview deployment differs from the production domain, so this keeps
+// same-origin traffic working without having to list every hostname.
+function isSameOrigin(req, origin) {
+  const host = req.headers['x-forwarded-host'] || req.headers.host
+  if (!host) return false
+  const proto = req.headers['x-forwarded-proto'] || req.protocol
+  return `${proto}://${host}` === origin
+}
+
+app.use(cors((req, callback) => {
+  callback(null, {
+    origin(origin, done) {
+      // Allow requests without an Origin header (e.g. local scripts).
+      if (!origin) {
+        return done(null, true)
+      }
+      if (allowedOrigins.has(origin)) {
+        return done(null, true)
+      }
+      if (isSameOrigin(req, origin)) {
+        return done(null, true)
+      }
+      return done(new Error(`CORS blocked origin: ${origin}`))
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
 }))
 
 // Sanitization & validation
@@ -85,6 +112,22 @@ app.get('/api/hello', (req, res) => {
   res.json({ message: 'Hello from backend' })
 })
 
+// ── Database connection ─────────────────────────────────────────
+// On Vercel the app runs as a serverless function: there is no startup hook
+// where the database could be opened, so the connection is established here,
+// lazily, on the first API request that needs it. The connection is then
+// reused by every later request handled by the same function instance.
+// Locally the connection is already open (see server.js) and this is a no-op.
+app.use('/api', async (req, res, next) => {
+  try {
+    await ensureDatabaseConnection()
+    next()
+  } catch (error) {
+    console.error('Database unavailable:', error.message)
+    res.status(503).json({ message: 'Database is temporarily unavailable. Please try again shortly.' })
+  }
+})
+
 // API routes
 app.use('/api/v1/auth', authRoutes)
 app.use('/api/v1/auth', authMfaRouter)
@@ -97,7 +140,10 @@ app.use('/api/v1/settings', siteSettingsRoutes)
 app.use('/api/v1/chat', chatRoutes)
 
 // ── Production: serve built client ──────────────────────────────
-if (config.nodeEnv === 'production') {
+// Only used by the traditional single-server deployment (`npm start` with
+// NODE_ENV=production). On Vercel the frontend is a separate service, so the
+// backend never serves static files.
+if (config.nodeEnv === 'production' && !process.env.VERCEL) {
   const here = path.dirname(fileURLToPath(import.meta.url))
   const clientDist = path.resolve(here, '../../client/dist')
   app.use(express.static(clientDist, {

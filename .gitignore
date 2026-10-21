@@ -1,50 +1,50 @@
-# Dependencies
+# ── Dependencies ─────────────────────────────────────────────────────────────
 node_modules/
-server/node_modules/
+**/node_modules/
 
-# Environment — never commit secrets
+# ── Environment — never commit secrets ──────────────────────────────────────
 .env
+.env.*
 server.env
+!**/.env.example
 *.local
 
-# Build output
+# ── Build output ────────────────────────────────────────────────────────────
 client/dist/
 dist/
+build/
+**/build/
 
-# Logs
+# ── Logs and caches ─────────────────────────────────────────────────────────
 *.log
+**/*.log
 npm-debug.log*
-server-test-run.log
+server/log.txt
+server/test-results.txt
+server/test-output.txt
 test-output.txt
 
-# OS / editor
+# ── OS / editor ─────────────────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
 
-# Project snapshots and backups
-/backup-client/
-/backup-oct18-target/
-/backup-pre-revert/
-/backups/
+# ── Project snapshots and backups (local only) ──────────────────────────────
+backup-*/
+.backup-*/
+backups/
+**/backups/
 
-# Temporary artifact
+# ── Temporary artifacts ─────────────────────────────────────────────────────
 /System.IO.MemoryStream
+/test-write.txt
+/app-diff.txt
 
-# Local chatbot backups
-/.backup-chatbot-*/
-/backup-chatbot-*/
-/backup-*/
-/backups/
+# Local throw-away helper scripts in the client folder
+/client/*.cjs
 
-# Server logs
-*.log
-**/*.log
-
-server/log.txt
-
-# local notes and helper files
+# ── Local notes and helper files ────────────────────────────────────────────
 *.ps1
 fix_chat.py
 *_REPORT.md
@@ -53,17 +53,4 @@ IMPLEMENTATION_NOTES.md
 ADMIN_PORTAL_UPDATE_NOTES.md
 Routing_Table.txt
 build-output.txt
-server/test-results.txt
-System.IO.MemoryStream
-
-# local notes and helper files
-*.ps1
-fix_chat.py
-*_REPORT.md
-Final_Report.txt
-IMPLEMENTATION_NOTES.md
-ADMIN_PORTAL_UPDATE_NOTES.md
-Routing_Table.txt
-build-output.txt
-server/test-results.txt
-System.IO.MemoryStream
+/deployment-*.md

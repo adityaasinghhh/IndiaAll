@@ -1,58 +1,30 @@
+import { pathToFileURL } from 'node:url'
 import { config } from './config/env.js'
 import { connectDatabase } from './config/database.js'
 import { verifyEmailConfig } from './config/email.js'
 import app from './app.js'
 
-// ── Vercel serverless function handler ──────────────────────────────────────
-// Vercel serverless functions expect an async handler (req, res) => { ... }.
-// We adapt the Express app by processing the incoming request through its middleware.
-// This allows all existing routes (/api/hello, /api/v1/*, auth, products, enquiries, admin, chat)
-// to work within Vercel's serverless environment without a persistent listener.
+/**
+ * Backend entry point.
+ *
+ * The same file is used for two situations:
+ *
+ *  1. Local development / traditional hosting (`npm start`, `npm run dev`):
+ *     we open a MongoDB connection, verify SMTP and start an HTTP listener.
+ *
+ *  2. Vercel serverless (the `server` service of this project): Vercel imports
+ *     this module once per function instance and then calls the exported
+ *     Express app for every incoming request. No listener may be opened here
+ *     and the process must never be terminated, otherwise the instance is
+ *     discarded between requests.
+ *
+ * The Express app itself is defined in `app.js`; this file only wires up the
+ * process-level behaviour and re-exports the app.
+ */
 
-const handler = async (req, res) => {
-  // Process the request through Express middleware.
-  // We use a path-based dispatch since full Express middleware chaining in serverless
-  // requires the Vercel platform's adaptation. The key routes are:
-  // - /api/hello — standalone, no database required
-  // - /api/v1/* — routed through Express's built-in handling
+// Vercel sets VERCEL=1 for both builds and function invocations.
+const isServerless = Boolean(process.env.VERCEL)
 
-  try {
-    // /api/hello — standalone endpoint, no database required
-    if (req.path === '/api/hello') {
-      res.json({ message: 'Hello from backend' })
-      return
-    }
-
-    // /api/v1/* routes — these require the full Express middleware stack.
-    // In Vercel serverless, we delegate to Express's built-in handling.
-    // The platform adapts the handler, and Express processes the route stack.
-    // If the path starts with /api/v1/, we let Express handle it through its
-    // adaptation layer. For now, we return a proper response indicating
-    // the route should be handled by the full Express stack.
-
-    // The most reliable approach: use Express' error-handling middleware
-    // pattern by passing the request through. Since Vercel's Node.js platform
-    // will adapt the handler, we can simply delegate paths starting with
-    // /api/v1/ to be processed by the Express app.
-
-    // However, for a fully working adaptation, Vercel's framework auto-detection
-    // combined with the vercel.json configuration is the recommended approach.
-    // We'll process what we can and defer the rest to the platform.
-
-    // For now, handle /api/hello and let the platform handle /api/v1/ routes.
-    // The existing test suite verifies the full stack works locally.
-
-    // If none of the above, respond with 404
-    res.status(404).json({ message: 'Not found' })
-  } catch (error) {
-    console.error('Handler error:', error.message)
-    res.status(500).json({ error: 'Internal server error' })
-  }
-}
-
-// ── Traditional hosting (local development) ───────────────────────────────
-// Start the Express server when explicitly run. This preserves the existing
-// `npm start` and `npm run dev` behavior while allowing Vercel serverless use.
 const startServer = async () => {
   try {
     // Check if MongoDB URI is configured
@@ -77,15 +49,17 @@ const startServer = async () => {
   }
 }
 
-// Start the server if this module is run directly (local development)
-// In ES modules, we check if the module is the main entry point
-if (require.main === module) {
+// Only start the HTTP listener when this file is executed directly.
+// `require.main === module` is not available in ES modules, so the module URL
+// is compared with the executed script path instead.
+const isDirectRun = Boolean(
+  process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href,
+)
+
+if (!isServerless && isDirectRun) {
   startServer()
 }
 
-// ── Exports ────────────────────────────────────────────────────────────────
-// Export the handler for Vercel serverless functions
-export { handler }
-
-// Export the Express app for potential vercel.json configuration
+// Vercel (and any other Node.js function platform) expects the Express
+// application as the default export of the entry point.
 export default app

@@ -12,6 +12,8 @@ Responsive trilingual B2B commodity-trading website with a React/Tailwind fronte
 - `client/` — primary React website, pages, translations, product photos and customer dashboard
 - `client/src/components/admin/` — admin dashboard pages and shared UI primitives
 - `server/` — Express API, MongoDB models, customer + admin authentication, enquiry/admin routes, validation, email templates
+- `server/src/data/products.js` — backend copy of the static product catalogue (generated, see below)
+- `vercel.json` — Vercel Services configuration (one project, two services)
 
 ## 1. Install and start the frontend
 From the project root:
@@ -101,3 +103,34 @@ It covers authentication, session restore/refresh/logout, RBAC, validation, ever
 - Run `npm run build` from the project root and `npm start` from `server/`.
 
 Never put secrets in `VITE_*` variables or frontend code. Vite exposes those variables to the browser.
+
+## 8. Deploying to Vercel (one project, two services)
+
+The repository is set up for [Vercel Services](https://vercel.com/docs/services): one Vercel project,
+one domain, two independently built services.
+
+- `client` — the public Vite site, served at `/`.
+- `server` — the Express API, reached through the `/api/*` rewrite.
+
+The browser always calls the API with a relative path (`/api/v1/...`), so the frontend and the
+backend share an origin and no cross-origin requests are made.
+
+### Project settings
+- Framework preset: **Services**
+- Root Directory: leave empty (the repository root — `vercel.json` lives there)
+
+### Environment variables
+Add every variable listed in `.env.example` under Project → Settings → Environment Variables
+for Production (and Preview if you want previews to work). A local `.env` file is **not** deployed.
+
+### Shared product catalogue
+`client/src/data/products.js` is the source of truth for the static catalogue. The backend needs
+the same data but Vercel builds each service from its own root directory, so the backend cannot
+import files from `client/`. Keep the copy in `server/src/data/products.js` in step:
+
+```powershell
+npm run sync:catalogue --prefix server          # regenerate the backend copy
+npm run sync:catalogue:check --prefix server    # fail if the copy is out of date
+```
+
+Run `sync:catalogue` whenever you edit the client catalogue.
