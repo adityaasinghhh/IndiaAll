@@ -1,6 +1,6 @@
 import { useLanguage } from '../../context/LanguageContext'
 
-export default function LanguageSwitcher({ dark }) {
+export default function LanguageSwitcher({ onDark = false, compact = false }) {
   const { lang, setLang } = useLanguage()
 
   const languages = [
@@ -9,25 +9,31 @@ export default function LanguageSwitcher({ dark }) {
     { code: 'pt', label: 'PT' },
   ]
 
-  const inactiveClass = dark
-    ? 'text-off-white hover:text-gold hover:bg-white/10'
-    : 'text-charcoal hover:text-gold hover:bg-white/10'
+  const inactiveClass = onDark
+    ? 'text-titanium/70 hover:text-off-white'
+    : 'text-steel hover:text-charcoal'
 
   return (
-    <div className="flex items-center gap-1" role="group" aria-label="Language selector">
-      {languages.map((l) => (
+    <div className="flex items-center gap-0.5" role="group" aria-label="Language selector">
+      {languages.map((language) => (
         <button
-          key={l.code}
+          key={language.code}
           type="button"
-          onClick={() => setLang(l.code)}
-          className={`rounded-md px-2.5 py-1.5 text-xs font-bold transition-all ${
-            lang === l.code
-              ? 'bg-gold text-charcoal'
-              : inactiveClass}
+          onClick={() => setLang(language.code)}
+          className={`px-1.5 ${compact ? 'py-0.5' : 'py-1.5'} text-[10px] font-semibold tracking-[0.12em] transition-colors focus-visible:outline-none focus-visible:ring-2 ${
+            onDark
+              ? 'focus-visible:ring-titanium focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal'
+              : 'focus-visible:ring-industrial-blue focus-visible:ring-offset-2'
+          } ${
+            lang === language.code
+              ? onDark
+                ? 'text-off-white underline decoration-titanium/60 underline-offset-4'
+                : 'text-charcoal underline decoration-industrial-blue/60 underline-offset-4'
+              : inactiveClass
           }`}
-          aria-pressed={lang === l.code}
+          aria-pressed={lang === language.code}
         >
-          {l.label}
+          {language.label}
         </button>
       ))}
     </div>

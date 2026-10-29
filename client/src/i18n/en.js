@@ -150,6 +150,7 @@ export default {
       all: 'All',
       energy: 'Energy & Fertilizers',
       agriculture: 'Agriculture & Food',
+      food: 'Food & Specialty Products',
       metals: 'Metals & Minerals',
     },
     enquireNow: 'Enquire About This Product',

@@ -1,0 +1,7 @@
+{
+  "framework": "express",
+  "functions": "src/server.js",
+  "environment": {
+    "NODE_ENV": "production"
+  }
+}

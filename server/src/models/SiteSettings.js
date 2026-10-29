@@ -4,7 +4,6 @@ const siteSettingsSchema = new mongoose.Schema(
   {
     maintenanceMode: { type: Boolean, default: true },
     contactEmail: { type: String, default: 'Info@indiaall.org' },
-    whatsappNumber: { type: String, default: '15551234567' },
     companyProfilePdfUrl: { type: String, default: '' },
     offices: {
       india: { address: { type: String, default: 'Bakhtawarpur, Delhi 110036' } },

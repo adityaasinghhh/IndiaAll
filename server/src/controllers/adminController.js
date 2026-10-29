@@ -807,7 +807,7 @@ export async function exportBulkOrdersCSV(req, res, next) {
 // Products
 // ---------------------------------------------------------------------------
 
-const PRODUCT_CATEGORIES = ['energy', 'agriculture', 'metals']
+const PRODUCT_CATEGORIES = ['energy', 'agriculture', 'food', 'metals']
 
 function validateProductInput(body, { partial = false } = {}) {
   const errors = []

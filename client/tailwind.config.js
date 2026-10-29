@@ -32,7 +32,7 @@ export default {
         'border-medium': '#C5C9C8',
       },
       fontFamily: {
-        serif: ['"Playfair Display"', 'Lora', 'Georgia', 'serif'],
+        serif: ['Newsreader', '"Playfair Display"', 'Georgia', 'serif'],
         sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
       },
       fontSize: {

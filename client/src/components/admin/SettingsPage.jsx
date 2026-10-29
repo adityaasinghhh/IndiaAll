@@ -165,7 +165,6 @@ export default function SettingsPage({ admin, onProfileUpdate, onLogout }) {
     try {
       await adminApi.updateSettings({
         contactEmail: settings.contactEmail,
-        whatsappNumber: settings.whatsappNumber,
         companyProfilePdfUrl: settings.companyProfilePdfUrl || '',
         offices: settings.offices,
       })
@@ -306,20 +305,12 @@ export default function SettingsPage({ admin, onProfileUpdate, onLogout }) {
         ) : settings ? (
           <form onSubmit={submitSettings} className="max-w-lg space-y-4 rounded-xl border border-gray-200 bg-white p-6 shadow-card">
             <h3 className="font-serif text-lg font-semibold text-navy">Business information</h3>
-            <p className="text-sm text-muted">Shown across the public website (contact page, WhatsApp button, enquiry recipient).</p>
+            <p className="text-sm text-muted">Shown across the public website (contact page and enquiry recipient).</p>
             <Field label="Contact email">
               <input
                 type="email" value={settings.contactEmail || ''}
                 onChange={(e) => setSettings({ ...settings, contactEmail: e.target.value })}
                 className="input-base"
-              />
-            </Field>
-            <Field label="WhatsApp number">
-              <input
-                type="text" value={settings.whatsappNumber || ''}
-                onChange={(e) => setSettings({ ...settings, whatsappNumber: e.target.value })}
-                className="input-base"
-                placeholder="+1 555 123 4567"
               />
             </Field>
             <Field label="Company profile PDF URL">

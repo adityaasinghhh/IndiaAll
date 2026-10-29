@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
+import { ArrowUpRight } from './ui/Icons'
 
 export default function ProductCard({ product }) {
   const { t } = useLanguage()
@@ -7,87 +8,57 @@ export default function ProductCard({ product }) {
   const categoryLabel = t.products.categories[product.category] || product.category
 
   return (
-    <article className="product-card group relative flex h-full flex-col overflow-visible rounded-xl border border-border-light bg-white shadow-card transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.02] hover:border-gold hover:shadow-card-hover focus-within:-translate-y-2 focus-within:scale-[1.02] focus-within:border-gold focus-within:shadow-card-hover">
-      {/* Image */}
+    <article className="group flex h-full flex-col border-t border-charcoal/20 pt-4">
       <Link
         to={enquiryTo}
-        className="product-card__image relative block aspect-[4/3] overflow-hidden rounded-t-xl bg-surface"
+        className="relative block aspect-[4/3] overflow-hidden bg-titanium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-industrial-blue focus-visible:ring-offset-4"
         aria-label={`${product.name} — ${t.products.enquireNow}`}
       >
         <img
           src={product.image}
-          alt={`${product.name} product`}
+          alt={product.name}
           loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-500 ease-out [@media(hover:none)]:group-hover:scale-100"
+          className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.035]"
           onError={(event) => {
             event.currentTarget.onerror = null
             event.currentTarget.src = '/images/products/pexels-3000028.jpg'
           }}
         />
-        <span className="absolute left-3 top-3 rounded-full border border-gold/50 bg-charcoal/85 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-off-white backdrop-blur-sm transition-all duration-300 group-hover:border-gold group-hover:bg-charcoal group-focus-within:border-gold group-focus-within:bg-charcoal">
-          {categoryLabel}
+        <span className="absolute bottom-0 right-0 flex h-10 w-10 items-center justify-center bg-off-white text-charcoal transition-colors duration-300 group-hover:bg-industrial-blue group-hover:text-off-white">
+          <ArrowUpRight className="h-4 w-4" />
         </span>
       </Link>
 
-      {/* Body */}
-      <div className="flex flex-1 flex-col p-5">
-        <h3 className="mb-2 font-serif text-xl font-bold leading-snug text-charcoal transition-colors duration-300 group-hover:text-industrial-blue group-focus-within:text-industrial-blue">
+      <div className="flex flex-1 flex-col pt-4">
+        <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-steel">
+          {categoryLabel}
+        </p>
+        <h3 className="mt-2 font-serif text-[1.3rem] leading-[1.2] text-charcoal transition-colors group-hover:text-industrial-blue">
           <Link
             to={enquiryTo}
-            className="transition-colors hover:text-industrial-blue focus-visible:text-industrial-blue"
+            className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-industrial-blue focus-visible:ring-offset-2"
           >
             {product.name}
           </Link>
         </h3>
-
-        {/* Short description — always visible */}
-        <p className="mb-3 text-sm font-medium leading-6 text-text-secondary line-clamp-2">
+        <p className="mt-2 text-[13px] leading-6 text-body-text/65 line-clamp-2">
           {product.description}
         </p>
 
-        {/* Extra details — revealed on hover/focus */}
-        <div className="product-card__extra-details mb-3 opacity-0 translate-y-2 transition-all duration-300 ease-out group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:translate-y-0 [@media(hover:none)]:opacity-100 [@media(hover:none)]:translate-y-0">
-          <p className="text-sm font-medium leading-6 text-steel line-clamp-3 border-t border-border-light pt-3">
-            {product.description}
-          </p>
-        </div>
-
-        {product.origin && (
-          <p className="mb-4 flex items-start gap-1.5 text-xs font-medium leading-5 text-text-muted">
-            <svg
-              className="mt-0.5 h-3.5 w-3.5 shrink-0 text-industrial-blue"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-              />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-            </svg>
-            {product.origin}
-          </p>
-        )}
-        <Link
-          to={enquiryTo}
-          className="btn-primary mt-auto w-full disabled:cursor-not-allowed"
-          tabIndex={0}
-        >
-          {t.products.enquireNow}
-          <svg
-            className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
+        <div className="mt-auto pt-5">
+          {product.origin && (
+            <p className="border-t border-charcoal/10 pt-3 text-[10px] leading-5 text-steel">
+              {product.origin}
+            </p>
+          )}
+          <Link
+            to={enquiryTo}
+            className="mt-3 inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-charcoal transition-colors hover:text-industrial-blue"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </Link>
+            {t.products.enquireNow}
+            <ArrowUpRight className="h-3 w-3" />
+          </Link>
+        </div>
       </div>
     </article>
   )

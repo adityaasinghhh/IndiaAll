@@ -18,7 +18,7 @@ router.get('/', async (req, res, next) => {
 
 router.put('/', authenticateAdmin, async (req, res, next) => {
   try {
-    const { maintenanceMode, contactEmail, whatsappNumber, companyProfilePdfUrl, offices, dataRetentionDays } = req.body
+    const { maintenanceMode, contactEmail, companyProfilePdfUrl, offices, dataRetentionDays } = req.body
 
     let settings = await SiteSettings.findOne()
     if (!settings) {
@@ -27,7 +27,6 @@ router.put('/', authenticateAdmin, async (req, res, next) => {
 
     if (maintenanceMode !== undefined) settings.maintenanceMode = maintenanceMode
     if (contactEmail) settings.contactEmail = contactEmail
-    if (whatsappNumber) settings.whatsappNumber = whatsappNumber
     if (companyProfilePdfUrl !== undefined) settings.companyProfilePdfUrl = companyProfilePdfUrl
     if (offices) {
       if (offices.india) settings.offices.india.address = offices.india.address

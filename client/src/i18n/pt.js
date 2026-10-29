@@ -150,6 +150,7 @@ export default {
       all: 'Todos',
       energy: 'Energia e Fertilizantes',
       agriculture: 'Agricultura e Alimentos',
+      food: 'Alimentos e produtos especiais',
       metals: 'Metais e Minerais',
     },
     enquireNow: 'Consultar Sobre Este Produto',

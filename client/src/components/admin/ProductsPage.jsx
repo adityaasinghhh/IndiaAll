@@ -9,7 +9,7 @@ import {
   Pagination,
 } from './ui.jsx'
 
-const CATEGORIES = ['energy', 'agriculture', 'metals']
+const CATEGORIES = ['energy', 'agriculture', 'food', 'metals']
 const PAGE_SIZE = 20
 
 const emptyForm = {

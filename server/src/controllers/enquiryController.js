@@ -29,8 +29,10 @@ async function logAction(req, action, targetId, details) {
 
 export async function createEnquiry(req, res, next) {
   try {
-    const { name, company, email, phone, commodity, quantity, message, consent } = req.body
-    const deliveryLocation = req.body.deliveryLocation || req.body.location
+    const {
+      name, company, email, phone, commodity, quantity, country, enquiryType, message, consent,
+    } = req.body
+    const deliveryLocation = req.body.deliveryLocation || country
 
     let customer = null
     if (req.cookies.customer_access_token) {
@@ -51,6 +53,8 @@ export async function createEnquiry(req, res, next) {
       commodity: sanitizeString(commodity),
       quantity: sanitizeString(quantity),
       deliveryLocation: sanitizeString(deliveryLocation),
+      country: sanitizeString(country),
+      enquiryType: sanitizeString(enquiryType),
       message: sanitizeString(message),
       consent,
       consentTimestamp: new Date(),
@@ -129,6 +133,7 @@ export async function getAllEnquiries(req, res, next) {
     const { page, limit, skip } = parsePagination(req.query.page, req.query.limit)
 
     const query = {}
+    const conditions = []
     if (status) {
       if (!ENQUIRY_STATUSES.includes(status)) {
         return res.status(400).json({ message: 'Invalid status filter' })
@@ -136,7 +141,12 @@ export async function getAllEnquiries(req, res, next) {
       query.status = status
     }
     if (commodity) query.commodity = sanitizeString(commodity, 200)
-    if (country) query.deliveryLocation = new RegExp(sanitizeString(country, 200).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i')
+    if (country) {
+      const escaped = sanitizeString(country, 200).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      conditions.push({
+        $or: [{ deliveryLocation: new RegExp(escaped, 'i') }, { country: new RegExp(escaped, 'i') }],
+      })
+    }
 
     if (from || to) {
       const range = {}
@@ -147,8 +157,11 @@ export async function getAllEnquiries(req, res, next) {
       if (Object.keys(range).length > 0) query.createdAt = range
     }
 
-    const searchClause = searchFilter(req.query.search, ['name', 'company', 'email', 'commodity', 'deliveryLocation'])
-    if (searchClause) query.$or = searchClause.$or
+    const searchClause = searchFilter(req.query.search, [
+      'name', 'company', 'email', 'commodity', 'deliveryLocation', 'country', 'enquiryType',
+    ])
+    if (searchClause) conditions.push(searchClause)
+    if (conditions.length > 0) query.$and = conditions
 
     const [enquiries, total] = await Promise.all([
       Enquiry.find(query)
@@ -314,7 +327,7 @@ export async function exportEnquiriesCSV(req, res, next) {
     const enquiries = await Enquiry.find(query).sort({ createdAt: -1 }).limit(5000)
 
     // Internal notes and reply threads are deliberately excluded from exports.
-    const headers = ['Date', 'Name', 'Company', 'Email', 'Phone', 'Commodity', 'Quantity', 'Location', 'Status']
+    const headers = ['Date', 'Name', 'Company', 'Email', 'Phone', 'Commodity', 'Quantity', 'Location', 'Country', 'Enquiry Type', 'Status']
     const rows = enquiries.map((e) => [
       new Date(e.createdAt).toISOString(),
       e.name,
@@ -324,6 +337,8 @@ export async function exportEnquiriesCSV(req, res, next) {
       e.commodity,
       e.quantity,
       e.deliveryLocation,
+      e.country,
+      e.enquiryType,
       e.status,
     ])
 

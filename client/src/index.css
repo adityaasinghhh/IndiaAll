@@ -17,8 +17,13 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif;
+    @apply font-serif font-normal;
     text-wrap: balance;
+  }
+
+  ::selection {
+    background: #326783;
+    color: #f3f2ee;
   }
 
   p {
@@ -48,6 +53,113 @@
 @layer components {
   .container-site {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* ---------- Editorial corporate system ---------- */
+  .shell {
+    @apply mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12 xl:px-16;
+  }
+
+  .shell-narrow {
+    @apply mx-auto w-full max-w-[1120px] px-5 sm:px-8 lg:px-12;
+  }
+
+  .display {
+    @apply font-serif font-normal leading-[0.98] tracking-[-0.025em];
+  }
+
+  .display-tight {
+    @apply font-serif font-normal leading-[1.04] tracking-[-0.02em];
+  }
+
+  .body-copy {
+    @apply text-base leading-[1.8] text-body-text/80;
+  }
+
+  .rule {
+    @apply border-t border-charcoal/15;
+  }
+
+  .rule-light {
+    @apply border-t border-white/15;
+  }
+
+  /* Buttons — square, typographic, restrained */
+  .btn-corporate {
+    @apply inline-flex items-center justify-center gap-3 border border-charcoal bg-charcoal px-6 py-3.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-off-white transition-colors duration-200 hover:border-industrial-blue hover:bg-industrial-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-industrial-blue focus-visible:ring-offset-2 focus-visible:ring-offset-off-white disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-corporate-light {
+    @apply inline-flex items-center justify-center gap-3 border border-off-white bg-off-white px-6 py-3.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-charcoal transition-colors duration-200 hover:border-titanium hover:bg-titanium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-titanium focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-corporate-outline {
+    @apply inline-flex items-center justify-center gap-3 border border-charcoal/35 px-6 py-3.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-charcoal transition-colors duration-200 hover:border-charcoal hover:bg-charcoal hover:text-off-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-industrial-blue focus-visible:ring-offset-2 focus-visible:ring-offset-off-white disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-corporate-outline-light {
+    @apply inline-flex items-center justify-center gap-3 border border-white/45 px-6 py-3.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-white transition-colors duration-200 hover:border-off-white hover:bg-off-white hover:text-charcoal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-titanium focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-corporate:disabled,
+  .btn-corporate-light:disabled,
+  .btn-corporate-outline:disabled,
+  .btn-corporate-outline-light:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
+  .link-arrow {
+    @apply inline-flex items-center gap-2 border-b border-charcoal/30 pb-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-charcoal transition-colors duration-200 hover:border-industrial-blue hover:text-industrial-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-industrial-blue focus-visible:ring-offset-2;
+  }
+
+  .link-arrow-light {
+    @apply inline-flex items-center gap-2 border-b border-white/30 pb-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/90 transition-colors duration-200 hover:border-titanium hover:text-titanium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-titanium focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal;
+  }
+
+  /* Form controls */
+  .field-label {
+    @apply mb-2 block text-[11px] font-semibold uppercase tracking-[0.12em] text-charcoal/70;
+  }
+
+  .field-input {
+    @apply w-full border border-charcoal/20 bg-transparent px-4 py-3.5 text-sm text-body-text placeholder:text-steel/70 transition-colors duration-200 focus:border-industrial-blue focus:outline-none focus:ring-1 focus:ring-industrial-blue/30 disabled:cursor-not-allowed disabled:bg-charcoal/5;
+  }
+
+  .field-error {
+    @apply mt-2 text-xs font-semibold text-red-700;
+  }
+
+  .field-hint {
+    @apply mt-2 text-xs leading-5 text-steel;
+  }
+
+  /* Editorial media */
+  .media-zoom img {
+    @apply transition-transform duration-700 ease-out;
+  }
+
+  .media-zoom:hover img,
+  .media-zoom:focus-within img {
+    transform: scale(1.035);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .media-zoom img {
+      transition: none;
+    }
+  }
+
+  .on-dark :focus-visible {
+    @apply ring-titanium ring-offset-charcoal;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
   }
 
   /* ---------- Buttons ---------- */

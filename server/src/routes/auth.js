@@ -15,12 +15,12 @@ import {
 } from '../controllers/authController.js'
 import { authenticateCustomer } from '../middleware/auth.js'
 import { authLimiter, loginLimiter } from '../middleware/rateLimiter.js'
-import { validateRegistration } from '../middleware/validate.js'
+import { validateRegistration, validateLogin } from '../middleware/validate.js'
 
 const router = Router()
 
 router.post('/register', authLimiter, validateRegistration, register)
-router.post('/login', loginLimiter, login)
+router.post('/login', loginLimiter, validateLogin, login)
 router.post('/logout', authenticateCustomer, logout)
 router.get('/me', authenticateCustomer, getMe)
 router.put('/profile', authenticateCustomer, updateProfile)

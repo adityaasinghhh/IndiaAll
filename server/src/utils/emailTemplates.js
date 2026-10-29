@@ -38,8 +38,16 @@ export function enquiryNotificationEmail(enquiry) {
             <td style="padding: 8px 0;">${escapeHtml(enquiry.quantity || '')}</td>
           </tr>
           <tr>
+            <td style="padding: 8px 0; font-weight: bold; color: #292D32;">Enquiry Type:</td>
+            <td style="padding: 8px 0;">${escapeHtml(enquiry.enquiryType || 'N/A')}</td>
+          </tr>
+          <tr>
             <td style="padding: 8px 0; font-weight: bold; color: #292D32;">Delivery Location:</td>
             <td style="padding: 8px 0;">${escapeHtml(enquiry.deliveryLocation || '')}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; font-weight: bold; color: #292D32;">Country:</td>
+            <td style="padding: 8px 0;">${escapeHtml(enquiry.country || 'N/A')}</td>
           </tr>
           <tr>
             <td style="padding: 8px 0; font-weight: bold; color: #292D32;">Message:</td>

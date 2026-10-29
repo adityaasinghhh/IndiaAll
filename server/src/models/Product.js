@@ -6,7 +6,7 @@ const productSchema = new mongoose.Schema(
     slug: { type: String, required: true, unique: true, lowercase: true },
     category: {
       type: String,
-      enum: ['energy', 'agriculture', 'metals'],
+      enum: ['energy', 'agriculture', 'food', 'metals'],
       required: true,
     },
     description: {

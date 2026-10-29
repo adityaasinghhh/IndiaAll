@@ -8,11 +8,13 @@ import Footer from './components/layout/Footer'
 import Maintenance from './components/Maintenance'
 import ErrorBoundary from './components/ErrorBoundary'
 import ScrollToTop from './components/ScrollToTop'
-import WhatsAppButton from './components/WhatsAppButton'
 import CustomerSupportChat from './components/support/CustomerSupportChat'
 
 const Home = lazy(() => import('./pages/Home'))
 const About = lazy(() => import('./pages/About'))
+const GlobalSourcing = lazy(() => import('./pages/GlobalSourcing'))
+const BusinessOpportunities = lazy(() => import('./pages/BusinessOpportunities'))
+const OurStory = lazy(() => import('./pages/OurStory'))
 const Products = lazy(() => import('./pages/Products'))
 const CustomBulkOrder = lazy(() => import('./pages/CustomBulkOrder'))
 const Enquiry = lazy(() => import('./pages/Enquiry'))
@@ -31,11 +33,19 @@ const Admin = lazy(() => import('./pages/Admin'))
 
 function NotFound() {
   return (
-    <main className="container-site py-24 text-center">
-      <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[#A8873A]">404</p>
-      <h1 className="font-serif text-4xl font-semibold text-[#0B1F3A]">Page not found</h1>
-      <p className="mx-auto mt-4 max-w-md text-[#5B6470]">The page may have moved, or the address may be incorrect.</p>
-      <a href="/" className="btn-primary mt-8 inline-flex">Return home</a>
+    <main className="flex min-h-[60vh] items-center bg-off-white py-24">
+      <div className="shell">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-industrial-blue">404</p>
+        <h1 className="display mt-5 max-w-2xl text-[clamp(2.4rem,5vw,4rem)] text-charcoal">
+          This page is not part of the route.
+        </h1>
+        <p className="mt-5 max-w-md text-sm leading-7 text-body-text/70">
+          The page may have moved, or the address may be incorrect.
+        </p>
+        <a href="/" className="btn-corporate mt-8">
+          Return home
+        </a>
+      </div>
     </main>
   )
 }
@@ -63,6 +73,9 @@ function PublicLayout() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
+              <Route path="/global-sourcing" element={<GlobalSourcing />} />
+              <Route path="/business-opportunities" element={<BusinessOpportunities />} />
+              <Route path="/our-story" element={<OurStory />} />
               <Route path="/products" element={<Products />} />
               <Route path="/products/custom-bulk-order" element={<CustomBulkOrder />} />
               <Route path="/enquiry" element={<Enquiry />} />
@@ -83,7 +96,6 @@ function PublicLayout() {
         </ErrorBoundary>
       </div>
       <Footer />
-      <WhatsAppButton />
       <CustomerSupportChat />
     </div>
   )
@@ -91,7 +103,7 @@ function PublicLayout() {
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <LanguageProvider>
         <AuthProvider>
           <MaintenanceProvider>

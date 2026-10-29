@@ -1,5 +1,6 @@
 import { config } from '../config/env.js'
 import { products } from '../data/products.js'
+import { geminate } from '../services/ai/gemini.service.js'
 
 const MAX_MESSAGE_LENGTH = 1000
 const MAX_HISTORY_MESSAGES = 6
@@ -114,16 +115,13 @@ async function checkAdminFaq(normalized, language) {
 /* ── Build handoff links ───────────────────────────────────────── */
 function buildHandoff(language, customerName) {
   const supportEmail = config.supportEmail || 'Info@indiaall.org'
-  const whatsappBase = config.whatsappLink || ''
   const encodedQuestion = encodeURIComponent(trimmed)
 
   const mailtoLink = `${supportEmail}?subject=INDIA%20ALL%20Support%20Enquiry&body=${encodedQuestion}`
 
   return {
     emailLink: mailtoLink,
-    whatsappLink: whatsappBase,
     emailText: language === 'en' ? `Email our team at ${supportEmail}` : language === 'es' ? `Correo a nuestro equipo en ${supportEmail}` : `E-mail nossa equipe em ${supportEmail}`,
-    whatsappText: whatsappBase ? (language === 'en' ? 'WhatsApp' : language === 'es' ? 'WhatsApp' : 'WhatsApp') : 'Submit an Enquiry',
     customerName,
   }
 }
@@ -131,9 +129,9 @@ function buildHandoff(language, customerName) {
 /* ── Fallback response builders ────────────────────────────────── */
 function buildFallbackResponse(language, handoff) {
   const responses = {
-    en: `I don't have an answer for that yet. Please email our team at Info@indiaall.org and we will get back to you. Alternatively, you can use our Enquiry form or WhatsApp.`,
-    es: "No tengo una respuesta aún para eso. Por favor, envíe un correo a nuestro equipo en Info@indiaall.org y le responderemos. Alternativamente, puede usar nuestro formulario de Consulta o WhatsApp.",
-    pt: "Não tenho uma resposta ainda para isso. Por favor, envie um e-mail ao nossa equipe em Info@indiaall.org e retornaremos o contato. Alternativamente, pode usar nosso formulário de Consulta ou WhatsApp.",
+    en: `I don't have an answer for that yet. Please email our team at Info@indiaall.org and we will get back to you, or use our enquiry form.`,
+    es: "No tengo una respuesta aún para eso. Por favor, envíe un correo a nuestro equipo en Info@indiaall.org y le responderemos, o utilice nuestro formulario de consulta.",
+    pt: "Não tenho uma resposta ainda para isso. Por favor, envie um e-mail para nossa equipe em Info@indiaall.org e retornaremos o contato, ou use nosso formulário de consulta.",
   }
   return responses[language] || responses.en
 }
@@ -144,7 +142,6 @@ function i18n(key, lang) {
     en: {
       fallback: "I don't have an answer for that yet. Please email our team at Info@indiaall.org and we will get back to you.",
       emailHandoff: 'Email our team at',
-      whatsappHandoff: 'WhatsApp',
       menu: 'Products & Commodities, Get a Quote, Custom Work Request, Transport & Delivery, My Enquiries, How It Works, Contact Us.',
       backToMenu: 'Back to menu',
       submitEnquiry: 'Submit an Enquiry',
@@ -152,7 +149,6 @@ function i18n(key, lang) {
     es: {
       fallback: "No tengo una respuesta aún para eso. Por favor, envíe un correo a nuestro equipo en Info@indiaall.org y le responderemos.",
       emailHandoff: 'Correo a nuestro equipo',
-      whatsappHandoff: 'WhatsApp',
       menu: 'Productos y Materiales, Presupuesto, Solicitud de Trabajo Personalizado, Transporte y Entrega, Mis Consultas, Cómo Funciona, Contacto.',
       backToMenu: 'Volver al menú',
       submitEnquiry: 'Enviar una Consulta',
@@ -160,7 +156,6 @@ function i18n(key, lang) {
     pt: {
       fallback: "Não tenho uma resposta ainda para isso. Por favor, envie um e-mail ao nossa equipe em Info@indiaall.org e retornaremos o contato.",
       emailHandoff: 'E-mail nossa equipe',
-      whatsappHandoff: 'WhatsApp',
       menu: 'Produtos e Material, Orçamento, Solicitação de Trabalho Personalizado, Transporte e Entrega, Minhas Consultas, Como Funciona, Contato.',
       backToMenu: 'Voltar ao menu',
       submitEnquiry: 'Enviar Consulta',
@@ -371,7 +366,7 @@ export async function chat(req, res, next) {
           // Start of B2B quote flow
           const response = `Are you buying for a business or personally?
 
-${i18n('emailHandoff', language)} ${config.supportEmail || 'Info@indiaall.org'} ${i18n('whatsappHandoff', language)} ${config.whatsappLink || ''}.
+${i18n('emailHandoff', language)} ${config.supportEmail || 'Info@indiaall.org'}.
 
 Please select:
 1. Business (B2B)
@@ -486,6 +481,20 @@ You can access the sign-in page [here]. Alternatively, you can submit a new enqu
 
     return res.status(200).json({ response, showMenu: true })
 
+    // ── Step 10: Gemini AI fallback (optional) ────────────────────
+    // Try Google Gemini AI if configured; fall back to static response if not available or on error
+    let geminiResponse
+    try {
+      const aiResult = await geminate({
+        message: trimmed,
+        conversationHistory,
+        timeoutMs: 15000,
+      })
+      geminiResponse = aiResult.response
+    } catch (aiError) {
+      // Gemini not configured or failed — will use static fallback below
+    }
+
     // ── Step 10: Friendly fallback with email + log unanswered ─────
     // Record the unanswered question (strip emails/phones before saving)
     const sanitized = trimmed
@@ -494,9 +503,11 @@ You can access the sign-in page [here]. Alternatively, you can submit a new enqu
     await recordUnanswered(sanitized, language)
 
     const handoff = buildHandoff(language)
-    const fallbackResponse = buildFallbackResponse(language, handoff)
 
-    return res.status(200).json({ response: fallbackResponse })
+    // Use Gemini response if available, otherwise use static fallback
+    const finalResponse = geminiResponse || buildFallbackResponse(language, handoff)
+
+    return res.status(200).json({ response: finalResponse })
   } catch (error) {
     console.error('Chat error:', error.message)
     return res.status(500).json({ message: 'Chat service failed. Please try again later.' })
