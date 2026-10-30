@@ -1,7 +1,5 @@
+
 {
-  "framework": "express",
-  "functions": "src/server.js",
-  "environment": {
-    "NODE_ENV": "production"
-  }
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "express"
 }
