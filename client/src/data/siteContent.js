@@ -34,8 +34,8 @@ export const siteContent = {
       eyebrow: 'International sourcing · Commodity trading',
       titleTop: 'Connecting Global Markets.',
       titleBottom: 'Delivering Trusted Trade Solutions.',
-      description:
-        'INDIA ALL connects buyers and suppliers through international sourcing, commodity trading, and coordinated trade solutions designed around business requirements.',
+     description:
+       'INDIA ALL is an integrated international import, export, and trading firm dedicated to simplifying global trade. We specialize in handling customized orders directly, taking complete ownership of the import-export lifecycle to ensure smooth delivery. Beyond order fulfillment, we actively engage in strategic global trading, connecting buyers and suppliers across key industries with integrity, speed, and efficiency.',
       primary: 'Explore Our Products',
       secondary: 'Discuss Your Requirements',
       metaLeft: 'Source · Connect · Deliver',
@@ -133,11 +133,13 @@ export const siteContent = {
       eyebrow: 'Our story',
       title: 'Bridging Continents. Connecting Opportunities.',
       lead:
-        'INDIA ALL is an international trading company built around a straightforward idea: better access to quality products creates better opportunities across markets.',
-      p1:
-        'Our journey began in 2018, with a focus on connecting buyers and suppliers across borders and making international trade conversations easier to navigate.',
-      p2:
-        'In 2021, we established our presence across India, Brazil and Canada. These three markets continue to shape how we source, coordinate and build relationships with partners.',
+        'Our journey began in 2018 during a series of international travels. As we moved across different continents, we noticed a striking gap in the market: authentic, high-quality Indian products, South American products and rich agricultural goods were either unavailable or inaccessible to everyday consumers around the world.',
+
+    p1:
+        'Driven by a passion for quality and fairness, we set out to bridge this gap. We started by connecting the supply chain directly from the source, removing unnecessary intermediaries and making genuine, premium-quality agricultural and traditional products accessible at honest, budget-friendly prices.',
+
+    p2:
+        'In 2021, we officially expanded and established our presence across India, Brazil, and Canada. Our purpose is to promote global wellness through natural, wholesome agricultural products and maintain radical transparency through open, honest, and ethical business practices at every step of trade—from farm to table.',
       milestones: [
         {
           year: '2018',
@@ -162,11 +164,13 @@ export const siteContent = {
       eyebrow: 'Our commitment',
       title: 'Making Global Trade Simpler.',
       lead:
-        'International trade is complex by nature. Our role is to make the path from requirement to agreement clearer, more transparent and better coordinated.',
-      p1:
-        'We are committed to transparent business practices, reliable supplier relationships and quality-conscious sourcing. Every conversation starts with the buyer’s requirement, the product specification and the commercial context.',
-      p2:
-        'By coordinating information, documentation and communication across markets, we help reduce friction in cross-border trade without overstating what any single party can control.',
+        'We are an end-to-end import, export, and trading company committed to making international commerce simple, efficient, and reliable.',
+
+    p1:
+       'Acting as both trusted trade intermediaries and direct supply partners, we manage full order fulfillment from origin to final destination.',
+
+    p2:
+       ' Our vision is to serve as a single, dependable bridge for buyers and sellers worldwide—delivering value, quality, and complete trade solutions under one roof.',
       principles: [
         {
           title: 'Transparent by default',
@@ -191,9 +195,11 @@ export const siteContent = {
     },
     opportunities: {
       eyebrow: 'Business opportunities',
-      title: 'Build the next trade relationship with us.',
-      intro:
-        'We work with businesses that value clear requirements, dependable communication and a considered approach to international trade.',
+      title:
+        'Unlocking Global Sourcing Potential.',
+
+    intro:
+      'Through our extensive network of verified producers and international markets, we identify high-demand commodities, emerging product lines, and specialized goods tailored to market trends. We bridge supply and demand by sourcing premium products with verified quality, competitive pricing, and reliable supply chains.',
       cta: 'Explore a Partnership',
       image: '/images/editorial/partnership.jpg',
       imageAlt: 'Two business people shaking hands after a meeting',
@@ -201,23 +207,23 @@ export const siteContent = {
       items: [
         {
           number: '01',
-          title: 'Sourcing partnerships',
-          text: 'For producers, processors and suppliers seeking a thoughtful route to international buyers and new commercial relationships.',
-          linkLabel: 'Discuss a sourcing partnership',
+          title: 'Industrial Raw Materials & Energy Commodities',
+          text: 'High-grade industrial raw materials and energy commodities.',
+          linkLabel: 'Explore opportunities',
           href: '/enquiry?enquiry=sourcing-partnership',
         },
         {
-          number: '02',
-          title: 'Buyer and supplier connections',
-          text: 'For buyers who need support identifying suitable supply, comparing options and coordinating requirements across markets.',
-          linkLabel: 'Start a buyer conversation',
-          href: '/enquiry?enquiry=buyer-supplier',
+           number: '02',
+           title: 'Agri-Commodities & Specialty Products',
+           text: 'Agri-commodities and specialized food and beverage products.',
+           linkLabel: 'Explore opportunities',
+           href: '/enquiry?enquiry=buyer-supplier',
         },
         {
           number: '03',
-          title: 'Distribution and trade opportunities',
-          text: 'For businesses exploring representation, distribution or joint trade opportunities in our active markets.',
-          linkLabel: 'Explore distribution',
+          title: 'Consumer Goods & Global Suppliers',
+          text: 'Consumer goods, niche market imports, and vetted international supplier networks with strict quality assurance.',
+          linkLabel: 'Explore opportunities',
           href: '/enquiry?enquiry=distribution',
         },
       ],
@@ -359,10 +365,11 @@ export const siteContent = {
       },
       opportunities: {
         eyebrow: 'Business opportunities',
-        title: 'Partnerships that move trade forward.',
+        title:
+          'Unlocking Global Sourcing Potential.',
+
         intro:
-          'We build working relationships with businesses that value clear requirements, dependable communication and a considered approach to cross-border trade.',
-        partnersTitle: 'Who we work with',
+          'Through our extensive network of verified producers and international markets, we identify high-demand commodities, emerging product lines, and specialized goods tailored to market trends. We bridge supply and demand by sourcing premium products with verified quality, competitive pricing, and reliable supply chains.',
         partnersIntro:
           'Our conversations are shaped by the role each business plays in the supply chain and the market it serves.',
         partners: [
