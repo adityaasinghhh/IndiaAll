@@ -17,7 +17,6 @@ import { adminRouter as adminMfaRouter } from './routes/mfa.js'
 import productRoutes from './routes/products.js'
 import bulkOrderRoutes from './routes/bulkOrders.js'
 import siteSettingsRoutes from './routes/siteSettings.js'
-import chatRoutes from './routes/chat.js'
 
 const app = express()
 
@@ -137,7 +136,6 @@ app.use('/api/v1/admin', adminMfaRouter)
 app.use('/api/v1/products', productRoutes)
 app.use('/api/v1/bulk-orders', bulkOrderRoutes)
 app.use('/api/v1/settings', siteSettingsRoutes)
-app.use('/api/v1/chat', chatRoutes)
 
 // ── Production: serve built client ──────────────────────────────
 // Only used by the traditional single-server deployment (`npm start` with

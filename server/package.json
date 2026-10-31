@@ -10,13 +10,12 @@
     "seed": "node src/config/seed.js",
     "sync:catalogue": "node scripts/sync-catalogue.mjs",
     "sync:catalogue:check": "node scripts/sync-catalogue.mjs --check",
-    "test": "node --test tests/admin.test.js tests/utils.test.js tests/chat.test.js"
+    "test": "node --test tests/admin.test.js tests/utils.test.js tests/enquiries.test.js"
   },
   "engines": {
     "node": ">=22"
   },
   "dependencies": {
-    "@google/genai": "^2.32.0",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",

@@ -40,15 +40,6 @@ export const loginLimiter = rateLimit({
   legacyHeaders: false,
 })
 
-export const chatLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 20,
-  skip: skipInTest,
-  message: { message: 'Too many chat messages from this IP. Please try again later.' },
-  standardHeaders: true,
-  legacyHeaders: false,
-})
-
 export const otpLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 10,

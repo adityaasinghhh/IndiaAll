@@ -23,6 +23,7 @@ const { connectDatabase } = await import('../src/config/database.js')
 const { default: mongoose } = await import('mongoose')
 const { default: app } = await import('../src/app.js')
 const { transporter } = await import('../src/config/email.js')
+const { default: Enquiry } = await import('../src/models/Enquiry.js')
 
 // Tests exercise the OTP flows without a real SMTP server; stub delivery so
 // send failures do not abort the flows under test.
@@ -30,7 +31,7 @@ transporter.sendMail = async () => ({ messageId: 'test-message' })
 
 await connectDatabase()
 
-export { app, mongoose }
+export { app, mongoose, Enquiry }
 
 export async function startServer() {
   const server = app.listen(0)

@@ -27,17 +27,4 @@ export const config = {
   maintenanceMode: process.env.MAINTENANCE_MODE === 'true',
   previewSecret: process.env.MAINTENANCE_PREVIEW_SECRET || 'india-all-preview',
   dataRetentionDays: parseInt(process.env.DATA_RETENTION_DAYS, 10) || 365,
-  ai: {
-    provider: process.env.AI_PROVIDER || 'openai',
-    openai: {
-      apiKey: process.env.OPENAI_API_KEY || '',
-      model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
-      baseUrl: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
-    },
-    gemini: {
-      apiKey: process.env.GEMINI_API_KEY || '',
-      model: process.env.GEMINI_MODEL || 'gemini-1.5-flash',
-      baseUrl: process.env.GEMINI_BASE_URL || 'https://generativelanguage.googleapis.com/v1beta',
-    },
-  },
 }

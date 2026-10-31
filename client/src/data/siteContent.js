@@ -131,9 +131,9 @@ export const siteContent = {
     },
     story: {
       eyebrow: 'Our story',
-      title: 'Bridging Continents. Connecting Opportunities.',
+      title: 'Bridging Continents, Connecting Cultures',
       lead:
-        'Our journey began in 2018 during a series of international travels. As we moved across different continents, we noticed a striking gap in the market: authentic, high-quality Indian products, South American products and rich agricultural goods were either unavailable or inaccessible to everyday consumers around the world.',
+        'Our journey began in 2018 during a series of international travels. As we moved across different continents, we noticed a striking gap in the market: authentic, high-quality Indian products, South American products etc—especially rich agricultural goods that India produces in abundance—were either unavailable or inaccessible to everyday consumers around the world. We saw millions of people missing out on nutritious, traditional products simply because the global supply chain was disconnected.',
 
     p1:
         'Driven by a passion for quality and fairness, we set out to bridge this gap. We started by connecting the supply chain directly from the source, removing unnecessary intermediaries and making genuine, premium-quality agricultural and traditional products accessible at honest, budget-friendly prices.',

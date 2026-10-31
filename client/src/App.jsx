@@ -8,7 +8,6 @@ import Footer from './components/layout/Footer'
 import Maintenance from './components/Maintenance'
 import ErrorBoundary from './components/ErrorBoundary'
 import ScrollToTop from './components/ScrollToTop'
-import CustomerSupportChat from './components/support/CustomerSupportChat'
 
 const Home = lazy(() => import('./pages/Home'))
 const About = lazy(() => import('./pages/About'))
@@ -71,7 +70,7 @@ function PublicLayout() {
         <ErrorBoundary>
           <Suspense fallback={<div className="container-site py-24 text-center">Loading…</div>}>
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Navigate to="/about" replace />} />
               <Route path="/about" element={<About />} />
               <Route path="/global-sourcing" element={<GlobalSourcing />} />
               <Route path="/business-opportunities" element={<BusinessOpportunities />} />
@@ -96,7 +95,6 @@ function PublicLayout() {
         </ErrorBoundary>
       </div>
       <Footer />
-      <CustomerSupportChat />
     </div>
   )
 }

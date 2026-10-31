@@ -1,10 +1,6 @@
 export default function FounderSection({ copy }) {
   return (
     <section id="commitment" className="on-dark relative isolate scroll-mt-32 overflow-hidden bg-charcoal py-20 text-titanium lg:py-28">
-      <div
-        aria-hidden="true"
-        className="absolute inset-y-0 right-0 hidden w-1/3 border-l border-white/10 lg:block"
-      />
       <div className="shell relative">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
           {/* Founder's note */}
